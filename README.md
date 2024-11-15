@@ -1,5 +1,5 @@
 # Lista 7 - Prog 2 - Jader Duarte
-# Questão 2
+# Questão 1
 def find_judge(n,trust):
     pessoas={p+1 for p in range(n)}
     for i in trust:
@@ -137,7 +137,7 @@ def grid_search(f: RealFunction, domain: Interval = None, grid_freq = 8) -> Inte
     idx = np.argmax(VI)
     return Interval(L1[idx], L1[idx+1])
 # Questão 5
-# Parte no git
+
 
 class interpolater:
 
@@ -167,8 +167,14 @@ class VandermondeMatrix(interpolater):
         for c in self._poly[::-1]:
             r = c+r*X
         return r
-
-
+## Resposta 
+class lagrangepol(interpolater):
+  def __init__(self,x,y):
+    self.pol= lagrange(x,y)
+  
+  def evaluate(self, X):
+        return self.pol(X)
+###
 def random_sample(intv, N):
     r = np.random.uniform(intv[0], intv[1], N-2)
     r.sort()
@@ -179,7 +185,6 @@ def error_pol(f, P, intv, n = 1000):
     vectError = np.abs(f(x)-P(x))
     return np.sum(vectError)/n, np.max(vectError)
 
-    
 if __name__=="__main__":
     # Q1
     t = [ [ 1 , 2 ] , [ 1 , 3 ] , [ 2 , 3 ] ]
@@ -203,8 +208,8 @@ if __name__=="__main__":
     ft = funcTest()
     ND = grid_search( ft, grid_freq=12)
     print(bissect(ft, search_space=ND))
-    # Q5
     import matplotlib.pyplot as plt
+    from time import time 
 
     DataX = [10.7       , 11.075     , 11.45      , 11.825     , 12.2       , 12.5]
     DataY = [-0.25991903,  0.04625002,  0.16592075,  0.13048074,  0.13902777, 0.2]
@@ -212,10 +217,31 @@ if __name__=="__main__":
     Pvm = VandermondeMatrix(DataX, DataY)
 
     X = np.linspace(min(DataX)-0.2, max(DataX)+0.2, 100)
-    Y = Pvm(X)
+    Y_vm = Pvm(X)
 
     _, ax = plt.subplots(1)
-    ax.plot(X,Y)
+    ax.plot(X,Y_vm)
     ax.axis('equal')
     ax.plot(DataX, DataY, 'o')
     plt.show()
+    ## Exemplo lagrange 
+    Lagrange_testezinho= lagrangepol(DataX,DataY)
+    #print(Lagrange_testezinho(10.7))
+    Y_lagrange=Lagrange_testezinho(X)
+
+    _, ax = plt.subplots(1)
+    ax.plot(X,Y_lagrange)
+    ax.axis('equal')
+    ax.plot(DataX, DataY, 'o')
+    plt.show()
+
+    ##comparando velocidade
+    t_0=time()
+    VandermondeMatrix(DataX, DataY)
+    t_vm= time()-t_0
+    start_time=time()
+    lagrangepol(DataX, DataY)
+    t_lag=time()-start_time
+    print(f"""
+    tempo de lagrange:{t_lag}
+    tempo da matriz de fulaninho: {t_vm}""")
