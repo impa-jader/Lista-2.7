@@ -136,6 +136,7 @@ def grid_search(f: RealFunction, domain: Interval = None, grid_freq = 8) -> Inte
         return None
     idx = np.argmax(VI)
     return Interval(L1[idx], L1[idx+1])
+
 # Questão 5
 
 
@@ -208,7 +209,6 @@ if __name__=="__main__":
     ft = funcTest()
     ND = grid_search( ft, grid_freq=12)
     print(bissect(ft, search_space=ND))
-    import matplotlib.pyplot as plt
     from time import time 
 
     DataX = [10.7       , 11.075     , 11.45      , 11.825     , 12.2       , 12.5]
@@ -245,3 +245,17 @@ if __name__=="__main__":
     print(f"""
     tempo de lagrange:{t_lag}
     tempo da matriz de fulaninho: {t_vm}""")
+
+
+    ### Questão 3
+    ### Usando os codigos das questões anteriores
+    Altura=[200,400,600,800,1000,1200,1400]
+    Temperatura=[15,9,5,3,-2,-5,15]
+    aproximação_3=lagrangepol(Altura,Temperatura)
+    r_a=
+    r_b=
+    print( f"""
+Questão 3, resposta
+    Utilizando pôlinomio de lagrange para aproximar uma função que relacione a altura e a temperatura com os dados que temos:
+    a) 
+    b) Utilizando pôlinomio de lagrange para aproximar uma função que relacione a altura e a temperatura com os dados que temos, vemos que quando o avião estava a 700 metros de altura sua temperatura era de {aproximação_3(700)} °C""")
